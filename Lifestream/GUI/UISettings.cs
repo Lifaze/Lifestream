@@ -145,25 +145,32 @@ internal static unsafe class UISettings
         {
             ImGuiEx.Text($"在聊天中输入 Lifestream 命令时建议自动完成");
             ImGui.Checkbox("启用", ref C.EnableAutoCompletion);
-        })
-
-        .Section("跨大区")
-        .Widget(() =>
-        {
-            ImGui.Checkbox($"允许前往另一个大区", ref C.AllowDcTransfer);
-            ImGui.Checkbox($"切换大区前离开队伍", ref C.LeavePartyBeforeLogout);
-            ImGui.Checkbox($"如果不在休息区，则在跨大区之前传送到以太之光", ref C.TeleportToGatewayBeforeLogout);
-            ImGui.Checkbox($"完成跨大区后传送到以太之光", ref C.DCReturnToGateway);
-            ImGui.Checkbox($"跨大区期间允许选择服务器", ref C.DcvUseAlternativeWorld);
-            ImGuiEx.HelpMarker("如果目标服务器不可用，但目标大区上的其他服务器可用，则会选择该服务器。正常登录后会切换服务器。");
-            ImGui.Checkbox($"如果目标服务器不可用，重试跨大区", ref C.EnableDvcRetry);
+            ImGui.Checkbox("在固定位置显示弹出窗口", ref C.AutoCompletionFixedWindow);
             ImGui.Indent();
-            ImGui.SetNextItemWidth(150f.Scale());
-            ImGui.InputInt("最大重试次数", ref C.MaxDcvRetries.ValidateRange(1, int.MaxValue));
-            ImGui.SetNextItemWidth(150f.Scale());
-            ImGui.InputInt("重试间隔，秒", ref C.DcvRetryInterval.ValidateRange(10, 1000));
+            ImGui.SetNextItemWidth(200f.Scale());
+            ImGui.DragFloat2("位置", ref C.AutoCompletionWindowOffset, 1f);
+            ImGuiEx.RadioButtonBool("从底部", "从顶部", ref C.AutoCompletionWindowBottom, sameLine: true, inverted: true);
+            ImGuiEx.RadioButtonBool("从右侧", "从左侧", ref C.AutoCompletionWindowRight, sameLine: true, inverted: true);
             ImGui.Unindent();
         })
+
+        //.Section("跨大区")
+        //.Widget(() =>
+        //{
+        //    ImGui.Checkbox($"允许前往另一个大区", ref C.AllowDcTransfer);
+        //    ImGui.Checkbox($"切换大区前离开队伍", ref C.LeavePartyBeforeLogout);
+        //    ImGui.Checkbox($"如果不在休息区，则在跨大区之前传送到以太之光", ref C.TeleportToGatewayBeforeLogout);
+        //    ImGui.Checkbox($"完成跨大区后传送到以太之光", ref C.DCReturnToGateway);
+        //    ImGui.Checkbox($"跨大区期间允许选择服务器", ref C.DcvUseAlternativeWorld);
+        //    ImGuiEx.HelpMarker("如果目标服务器不可用，但目标大区上的其他服务器可用，则会选择该服务器。正常登录后会切换服务器。");
+        //    ImGui.Checkbox($"如果目标服务器不可用，重试跨大区", ref C.EnableDvcRetry);
+        //    ImGui.Indent();
+        //    ImGui.SetNextItemWidth(150f.Scale());
+        //    ImGui.InputInt("最大重试次数", ref C.MaxDcvRetries.ValidateRange(1, int.MaxValue));
+        //    ImGui.SetNextItemWidth(150f.Scale());
+        //    ImGui.InputInt("重试间隔，秒", ref C.DcvRetryInterval.ValidateRange(10, 1000));
+        //    ImGui.Unindent();
+        //})
 
         .Section("地址簿")
         .Widget(() =>
