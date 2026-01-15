@@ -1,0 +1,33 @@
+name: Build Plugin Locally
+
+on: 
+  workflow_dispatch: # 允许你点击按钮手动触发编译
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive # 必须递归拉取 ECommons, OtterGui 等子项目
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.x
+
+    - name: Download Dalamud
+      run: |
+        Invoke-WebRequest -Uri https://goatcorp.github.io/actually-serious-unstable/latest.zip -OutFile latest.zip
+        Expand-Archive -Path latest.zip -DestinationPath lib/Dalamud/
+
+    - name: Build
+      run: dotnet build Lifestream.sln --configuration Release
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: Lifestream-Output
+        path: Lifestream/bin/Release/Lifestream/
